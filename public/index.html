@@ -5,80 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Authentification Firebase</title>
 
-  <!-- Importation des modules Firebase v9+ -->
-  <script type="module">
-    // Importation des modules nécessaires de Firebase
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js';
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js';
-
-
-    // Configuration de Firebase
-    const firebaseConfig = {
-        apiKey: "AIzaSyB2Ajhxbrsp9mKQoX86WIu_Eet0JgeWe8o",
-        authDomain: "xtlauth-44fcc.firebaseapp.com",
-        projectId: "xtlauth-44fcc",
-        storageBucket: "xtlauth-44fcc.firebasestorage.app",
-        messagingSenderId: "445959408494",
-        appId: "1:445959408494:web:1e99041bb8765571eecf7f"
-    };
-
-    // Initialiser Firebase
-    const app = initializeApp(firebaseConfig);
-
-    // Initialiser l'authentification Firebase
-    const auth = getAuth(app);
-
-    // Fonction d'inscription
-    function signUp() {
-      const email = document.getElementById('signup-email').value;
-      const password = document.getElementById('signup-password').value;
-
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          console.log("Utilisateur créé :", user.email);
-          document.getElementById('message').textContent = "Inscription réussie !";
-          document.getElementById('message').className = 'message success';
-          window.location.href = "/home";  // Redirection après inscription réussie
-        })
-        .catch((error) => {
-          console.error("Erreur lors de l'inscription :", error.message);
-          document.getElementById('message').textContent = error.message;
-          document.getElementById('message').className = 'message error';
-        });
-    }
-
-    // Fonction de connexion
-    function signIn() {
-      const email = document.getElementById('login-email').value;
-      const password = document.getElementById('login-password').value;
-
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          console.log("Utilisateur connecté :", user.email);
-          document.getElementById('message').textContent = "Connexion réussie !";
-          document.getElementById('message').className = 'message success';
-          window.location.href = "/home";  // Redirection après connexion réussie
-        })
-        .catch((error) => {
-          console.error("Erreur lors de la connexion :", error.message);
-          document.getElementById('message').textContent = error.message;
-          document.getElementById('message').className = 'message error';
-        });
-    }
-
-    // Vérification de l'état de l'utilisateur
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log("Utilisateur connecté :", user.email);
-        window.location.href = "/home";  // Rediriger si l'utilisateur est déjà connecté
-      } else {
-        console.log("Utilisateur non authentifié");
-      }
-    });
-  </script>
-
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -150,7 +76,7 @@
       <h2>Se connecter</h2>
       <input type="email" id="login-email" placeholder="Email" required>
       <input type="password" id="login-password" placeholder="Mot de passe" required>
-      <button onclick="signIn()">Se connecter</button>
+      <button id="login-btn">Se connecter</button>
       <p>Pas encore de compte ? <a href="javascript:void(0);" onclick="showSignUpForm()">Créer un compte</a></p>
     </div>
 
@@ -159,23 +85,95 @@
       <h2>Créer un compte</h2>
       <input type="email" id="signup-email" placeholder="Email" required>
       <input type="password" id="signup-password" placeholder="Mot de passe" required>
-      <button onclick="signUp()">S'inscrire</button>
+      <button id="signup-btn">S'inscrire</button>
       <p>Déjà un compte ? <a href="javascript:void(0);" onclick="showLoginForm()">Se connecter</a></p>
     </div>
 
     <div id="message" class="message"></div>
   </div>
 
-  <script>
+  <!-- Importation des modules Firebase v9+ -->
+  <script type="module">
+    // Importation des modules nécessaires de Firebase
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js';
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js';
+
+    
+ // Configuration de Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyB2Ajhxbrsp9mKQoX86WIu_Eet0JgeWe8o",
+        authDomain: "xtlauth-44fcc.firebaseapp.com",
+        projectId: "xtlauth-44fcc",
+        storageBucket: "xtlauth-44fcc.firebasestorage.app",
+        messagingSenderId: "445959408494", 
+        appId: "1:445959408494:web:1e99041bb8765571eecf7f"
+    };
+
+    // Initialiser Firebase
+    const app = initializeApp(firebaseConfig);
+
+    // Initialiser l'authentification Firebase
+    const auth = getAuth(app);
+
+    // Fonction d'inscription
+    window.signUp = function() {
+      const email = document.getElementById('signup-email').value;
+      const password = document.getElementById('signup-password').value;
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log("Utilisateur créé :", user.email);
+          document.getElementById('message').textContent = "Inscription réussie !";
+          document.getElementById('message').className = 'message success';
+          window.location.href = "/home";  // Redirection après inscription réussie
+        })
+        .catch((error) => {
+          console.error("Erreur lors de l'inscription :", error.message);
+          document.getElementById('message').textContent = error.message;
+          document.getElementById('message').className = 'message error';
+        });
+    }
+
+    // Fonction de connexion
+    window.signIn = function() {
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log("Utilisateur connecté :", user.email);
+          document.getElementById('message').textContent = "Connexion réussie !";
+          document.getElementById('message').className = 'message success';
+          window.location.href = "/home";  // Redirection après connexion réussie
+        })
+        .catch((error) => {
+          console.error("Erreur lors de la connexion :", error.message);
+          document.getElementById('message').textContent = error.message;
+          document.getElementById('message').className = 'message error';
+        });
+    }
+
+    // Vérification de l'état de l'utilisateur
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("Utilisateur connecté :", user.email);
+        window.location.href = "/home";  // Rediriger si l'utilisateur est déjà connecté
+      } else {
+        console.log("Utilisateur non authentifié");
+      }
+    });
+
     // Afficher le formulaire d'inscription
-    function showSignUpForm() {
+    window.showSignUpForm = function() {
       document.getElementById('login-form').style.display = 'none';
       document.getElementById('signup-form').style.display = 'block';
       document.getElementById('message').textContent = '';
     }
 
     // Afficher le formulaire de connexion
-    function showLoginForm() {
+    window.showLoginForm = function() {
       document.getElementById('signup-form').style.display = 'none';
       document.getElementById('login-form').style.display = 'block';
       document.getElementById('message').textContent = '';

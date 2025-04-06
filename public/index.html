@@ -4,9 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Authentification Firebase</title>
-  <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-auth.js"></script>
-  <style>
+   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -94,6 +92,12 @@
   </div>
 
   <script>
+
+
+  // Importation de Firebase depuis le CDN
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
    // Configuration de Firebase
    const firebaseConfig = {
             apiKey: "AIzaSyB2Ajhxbrsp9mKQoX86WIu_Eet0JgeWe8o",
@@ -104,9 +108,12 @@
             appId: "1:445959408494:web:1e99041bb8765571eecf7f"
         };
 
+
     // Initialiser Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+    const app = initializeApp(firebaseConfig);
+
+    // Initialiser l'authentification
+    const auth = getAuth(app);
 
     // Afficher le formulaire d'inscription
     function showSignUpForm() {

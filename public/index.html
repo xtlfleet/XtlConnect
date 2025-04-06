@@ -77,7 +77,7 @@
       <input type="email" id="login-email" placeholder="Email" required>
       <input type="password" id="login-password" placeholder="Mot de passe" required>
       <button id="login-btn">Se connecter</button>
-      <p>Pas encore de compte ? <a href="javascript:void(0);" onclick="showSignUpForm()">Créer un compte</a></p>
+      <p>Pas encore de compte ? <a href="javascript:void(0);" id="show-signup-form">Créer un compte</a></p>
     </div>
 
     <!-- Formulaire d'inscription -->
@@ -86,13 +86,13 @@
       <input type="email" id="signup-email" placeholder="Email" required>
       <input type="password" id="signup-password" placeholder="Mot de passe" required>
       <button id="signup-btn">S'inscrire</button>
-      <p>Déjà un compte ? <a href="javascript:void(0);" onclick="showLoginForm()">Se connecter</a></p>
+      <p>Déjà un compte ? <a href="javascript:void(0);" id="show-login-form">Se connecter</a></p>
     </div>
 
     <div id="message" class="message"></div>
   </div>
 
-  <!-- Importation des modules Firebase v9+ -->
+  <!-- Importation des modules Firebase -->
   <script type="module">
     // Importation des modules nécessaires de Firebase
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js';
@@ -100,12 +100,12 @@
 
     
  // Configuration de Firebase
-    const firebaseConfig = {
+   const firebaseConfig = {
         apiKey: "AIzaSyB2Ajhxbrsp9mKQoX86WIu_Eet0JgeWe8o",
         authDomain: "xtlauth-44fcc.firebaseapp.com",
         projectId: "xtlauth-44fcc",
         storageBucket: "xtlauth-44fcc.firebasestorage.app",
-        messagingSenderId: "445959408494", 
+        messagingSenderId: "445959408494",
         appId: "1:445959408494:web:1e99041bb8765571eecf7f"
     };
 
@@ -116,7 +116,7 @@
     const auth = getAuth(app);
 
     // Fonction d'inscription
-    window.signUp = function() {
+    function signUp() {
       const email = document.getElementById('signup-email').value;
       const password = document.getElementById('signup-password').value;
 
@@ -136,7 +136,7 @@
     }
 
     // Fonction de connexion
-    window.signIn = function() {
+    function signIn() {
       const email = document.getElementById('login-email').value;
       const password = document.getElementById('login-password').value;
 
@@ -165,19 +165,26 @@
       }
     });
 
-    // Afficher le formulaire d'inscription
-    window.showSignUpForm = function() {
-      document.getElementById('login-form').style.display = 'none';
-      document.getElementById('signup-form').style.display = 'block';
-      document.getElementById('message').textContent = '';
-    }
+    // Gestion de l'affichage des formulaires
+    document.addEventListener('DOMContentLoaded', () => {
+      // Affichage formulaire d'inscription
+      document.getElementById('show-signup-form').addEventListener('click', () => {
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('signup-form').style.display = 'block';
+        document.getElementById('message').textContent = '';
+      });
 
-    // Afficher le formulaire de connexion
-    window.showLoginForm = function() {
-      document.getElementById('signup-form').style.display = 'none';
-      document.getElementById('login-form').style.display = 'block';
-      document.getElementById('message').textContent = '';
-    }
+      // Affichage formulaire de connexion
+      document.getElementById('show-login-form').addEventListener('click', () => {
+        document.getElementById('signup-form').style.display = 'none';
+        document.getElementById('login-form').style.display = 'block';
+        document.getElementById('message').textContent = '';
+      });
+
+      // Ajout des événements pour les boutons
+      document.getElementById('signup-btn').addEventListener('click', signUp);
+      document.getElementById('login-btn').addEventListener('click', signIn);
+    });
   </script>
 
 </body>
